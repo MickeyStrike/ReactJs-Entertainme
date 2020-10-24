@@ -10,16 +10,17 @@ import "antd/dist/antd.css";
 
 import ListPokemon from '../components/ListPokemon'
 import useFetcher from '../helpers/useFetcher'
+const { Meta } = Card
 
 const readMore = (description) => {
-  let newDescription = []
+  let newDescription = ""
   if(description.length > 30) {
     description = description.split('')
     for (let i = 0; i < description.length; i++) {
       if(i < 30) {
         newDescription += description[i]
       }else {
-        return newDescription += '...'
+        newDescription += '...'
       }
     }
   } else {
@@ -29,7 +30,6 @@ const readMore = (description) => {
 }
 
 const SkeletonCard = () => {
-  const { Meta } = Card
   let eightCard = []
   for (let i = 0; i < 8; i++) {
     eightCard = 
@@ -87,15 +87,28 @@ export default function DashboardPage () {
                 }
             </Row>
             </Col>
-            <Col span={12}>
-            <Row justify="space-around" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height:'100%'}}>
-                <Col span={12}>
-                {pokemon == null ? <Empty /> : <img src={pokemon.image} style={{height: 240, width: 240}} alt="No Data"></img>}
-                </Col>
-                <Col span={12}>
-                {pokemon == null ? 'No Data Found' : pokemon.description}
-                </Col>
-            </Row>
+            <Col 
+              span={12}
+              style={{
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                flexDirection: 'column'
+              }}
+            >
+              {!pokemon ? 
+                <Empty /> 
+              : 
+                <Card
+                  hoverable
+                  cover={<img alt="pokemon" src={pokemon.image} />}
+                  style={{
+                    width: '70%'
+                  }}
+                >
+                  <Meta title={pokemon.name} description={pokemon.description} />
+                </Card>
+              }
             </Col>
         </Row>
     </>
